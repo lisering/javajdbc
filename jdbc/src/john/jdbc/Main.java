@@ -7,7 +7,9 @@ import java.sql.SQLException;
 public class Main {
 	private static final String USERNAME = "root";
 	private static final String PASSWORD = "";
-	private static final String CONN_STRING = "jdbc:mysql://localhost:3306/state";
+	private static final String CONN_STRING = 
+			"jdbc:hsqldb:data/state";
+//			"jdbc:mysql://localhost:3306/state";
 	public static void main(String[] args) throws SQLException {
 //		Class.forName("com.mysql.jdbc.Driver");
 		Connection conn = null;
