@@ -5,32 +5,23 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import john.jdbc.tables.Tours;
+
 public class Main {
 	public static void main(String[] args) throws SQLException {
-//		Class.forName("com.mysql.jdbc.Driver");
-		Connection conn = null;
-		Statement stmt = null;
 		ResultSet rs = null;
-		
-		try {
-//			conn = DriverManager.getConnection(CONN_STRING, USERNAME, PASSWORD);
-			conn = DBUtil.getConnection(DBType.MYSQL);
-			stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+		try (
+			Connection conn = DBUtil.getConnection(DBType.MYSQL);
+			Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+				) {
+			stmt.setMaxRows(10);
 			rs = stmt.executeQuery("SELECT * FROM state");
-			rs.last();
-			System.out.println("Number of rows: " + rs.getRow());
+			Tours.displayData(rs);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			DBUtil.processException(e);
 		} finally {
 			if (rs != null) {
 				rs.close();
-			}
-			if (stmt!= null) {
-				stmt.close();
-			}
-			if (conn != null) {
-				conn.close();
 			}
 		}
 	}
